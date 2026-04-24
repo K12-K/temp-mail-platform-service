@@ -5,7 +5,7 @@ import { generateEmail } from "../utils/generateEmail.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
   const email = generateEmail();
 
   // store metadata (optional but recommended)
