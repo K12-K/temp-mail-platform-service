@@ -7,7 +7,7 @@ const router = express.Router();
 const upload = multer();
 
 router.post("/mailgun", upload.none(), async (req, res) => {
-  console.log(req.body)
+  console.log(req)
   
   const {
     recipient,
