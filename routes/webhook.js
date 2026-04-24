@@ -42,8 +42,8 @@ router.post("/mailgun", upload.none(), async (req, res) => {
   };
 
   // Save to Redis (TTL 10 min)
-  await redis.lpush(`inbox:${recipient}`, JSON.stringify(message));
-  await redis.expire(`inbox:${recipient}`, 600);
+  await redis.lpush(`inbox:${to}`, JSON.stringify(message));
+  await redis.expire(`inbox:${to}`, 600);
 
   // Emit via socket (real-time)
   req.io?.to(recipient).emit("new_email", message);
