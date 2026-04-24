@@ -45,6 +45,7 @@ router.post("/mailgun", upload.none(), async (req, res) => {
     subject,
     text,
     html,
+    isRead: false,
     createdAt: new Date().toISOString()
   };
 
