@@ -4,6 +4,7 @@ import http from "http";
 import cors from "cors";
 import dotenv from "dotenv";
 
+import generateRoute from "./routes/generate.js";
 import inboxRoutes from "./routes/inbox.js";
 import webhookRoutes from "./routes/webhook.js";
 import { initSocket } from "./sockets/socket.js";
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/api/generate", generateRoute);
 app.use("/api/inbox", inboxRoutes);
 app.use("/webhook", webhookRoutes);
 
