@@ -35,6 +35,7 @@ router.post("/mailgun", upload.none(), async (req, res) => {
   // } = req.body;
 
   const message = {
+    id: crypto.randomUUID(),
     from,
     subject,
     text,
