@@ -21,9 +21,10 @@ router.post("/mailgun", upload.none(), async (req, res) => {
   const html = body["stripped-html"] || body["body-html"] || "";
   const text = body["stripped-text"] || body["body-plain"] || "";
 
+  const timestamp = new Date();
+
   // Generate preview (first 30 chars clean text)
   const preview = text.replace(/\s+/g, " ").trim().slice(0, 30);
-  console.log(body["stripped-html"])
 
   // const {
   //   recipient,
@@ -38,7 +39,8 @@ router.post("/mailgun", upload.none(), async (req, res) => {
     subject,
     text,
     html,
-    createdAt: new Date()
+    timestamp,
+    createdAt: timestamp
   };
 
   // Save to Redis (TTL 10 min)
