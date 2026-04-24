@@ -24,6 +24,13 @@ router.post("/mailgun", upload.none(), async (req, res) => {
   // Generate preview (first 30 chars clean text)
   const preview = text.replace(/\s+/g, " ").trim().slice(0, 30);
 
+  // Check if exists or not, but if i do this, then i need to hardcode the email refresh timer, and not just for showcasing or else it will stop getting new emails
+  // const exists = await redis.exists(`inbox_meta:${to}`);
+
+  // if (!exists) {
+  //   return res.send("Ignored"); // unknown inbox
+  // }
+
   // const {
   //   recipient,
   //   sender,
