@@ -8,7 +8,10 @@ const upload = multer();
 
 router.post("/mailgun", upload.none(), async (req, res) => {
   console.log(req)
-  
+  console.log("Headers:", req.headers);
+  console.log("Body:", req.body);
+  console.log("Raw fields:", Object.keys(req.body || {}));
+
   const {
     recipient,
     sender,
