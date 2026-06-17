@@ -39,8 +39,13 @@ router.post("/mailgun", upload.none(), async (req, res) => {
   //   "body-html": html
   // } = req.body;
 
+  const id = crypto.randomUUID();
+
+  const messageKey = `message:${id}`;
+  const inboxKey = `inbox:${to}`;
+
   const message = {
-    id: crypto.randomUUID(),
+    id,
     from,
     subject,
     text,
@@ -49,9 +54,19 @@ router.post("/mailgun", upload.none(), async (req, res) => {
     createdAt: new Date().toISOString()
   };
 
-  // Save to Redis (TTL 10 min)
-  await redis.lpush(`inbox:${to}`, JSON.stringify(message));
-  await redis.expire(`inbox:${to}`, 600);
+  // // Save to Redis (TTL 10 min)
+  // await redis.lpush(`inbox:${to}`, JSON.stringify(message));
+  // await redis.expire(`inbox:${to}`, 600);
+
+  // store message (HASH)
+  await redis.hmset(messageKey, message);
+
+  // push ID to inbox
+  await redis.lpush(inboxKey, id);
+
+  // TTL (sync both)
+  await redis.expire(inboxKey, 600);
+  await redis.expire(messageKey, 600);
 
   // Emit via socket (real-time)
   req.io?.to(to).emit("new_email", message);
