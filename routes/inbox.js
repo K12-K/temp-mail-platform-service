@@ -27,7 +27,10 @@ router.get("/:email", async (req, res) => {
   // const parsed = messages.map(m => JSON.parse(m));
   const parsed = messages.map(([err, data]) => {
     if (err || !data) return null;
-    return data;
+    return {
+      ...data,
+      isRead: data.isRead === "true",
+    };
   }).filter(Boolean);
 
   res.json(parsed);
